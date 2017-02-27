@@ -11,7 +11,7 @@ data:
 reports: 
 
 
-# {{{ generic commands
+# generic commands
 
 work/%.Rdata: r/create_%.R
 	$R $< $@
@@ -32,9 +32,9 @@ $(report_dir)/%.md : doc/%.Rmd
 
 artifacts/%.docx: $(report_dir)/%.md
 		pandoc $+ -o $@
-# end generic }}}
+# end generic 
 
-#{{{ cleaning
+#cleaning
 clean: docclean alldocclean dataclean
 
 dataclean:
@@ -46,10 +46,10 @@ articlean:
 docclean:
 	-rm -rf $(report_dir)/*
 	-rm -rf $(FIGUREDIR)/*
-# end cleaning }}}
+# end cleaning 
 
 artifacts/requested_table.xlsx: r/write_p_xls.R work/p_data_nons.Rdata
 	$(R) '$<' $@
 
-# {{{ dependencies ###################
-# end deps }}}
+# dependencies ###################
+# end deps 
