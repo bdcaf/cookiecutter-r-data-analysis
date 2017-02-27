@@ -1,0 +1,13 @@
+---
+title: "Sample notes"
+author: "Clemens Ager"
+date: "23 August 2016"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+library(ggplot)
+```
+
+## Sample notes
+
