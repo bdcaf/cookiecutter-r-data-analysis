@@ -21,6 +21,7 @@ $(report_dir)/%.md : doc/%.Rmd
 	echo $@
 	Rscript -e "require(knitr); require(markdown);" \
 	-e "require(knitr)" \
+	-e "require(pander)" \
 	-e "knitr::opts_knit[['set']](root.dir = normalizePath('./'))" \
 	-e "knitr::opts_chunk[['set']](fig.path='$(FIGUREDIR)/$*-')" \
 	-e "knitr::opts_chunk[['set']](cache.path='$(CACHEDIR)/$*-')" \
@@ -28,6 +29,8 @@ $(report_dir)/%.md : doc/%.Rmd
 	-e "knitr::opts_chunk[['set']](fig.align='center')" \
 	-e "knitr::opts_chunk[['set']](dpi=144, fig.width=7, fig.height=6)" \
 	-e "knitr::opts_chunk[['set']](echo=FALSE, warning=FALSE, results='asis');" \
+	-e "panderOptions('table.split.cells', 20)" \
+	-e "panderOptions('table.split.table', Inf)" \
 	-e "knit('$<', '$(@)'); "
 
 artifacts/%.docx: $(report_dir)/%.md
