@@ -8,8 +8,7 @@ CACHEDIR= cache
 all: reports data 
 
 data: 
-reports: 
-
+reports: artifacts/titanic.docx
 
 # generic commands
 
@@ -55,4 +54,7 @@ artifacts/requested_table.xlsx: r/write_p_xls.R work/p_data_nons.Rdata
 	$(R) '$<' $@
 
 # dependencies ###################
+work/titanic.Rdata: data/titanic.csv
+work/transform.Rdata: work/titanic.Rdata
+$(reportdir)/titanic.md: work/transform.Rdata
 # end deps 

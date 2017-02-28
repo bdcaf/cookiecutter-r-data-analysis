@@ -17,5 +17,10 @@ All results are to be put in the `artifacts` directory.
 The finalized project should be able to run using `make`.
 
 
+## Example Project
+
+The example project consist of following steps:
+
+1. convert titanic.csv into native R data (titanic.Rdata)
 
 
