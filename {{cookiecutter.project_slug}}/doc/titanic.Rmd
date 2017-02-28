@@ -1,3 +1,8 @@
+---
+title: "An example report"
+author: "{{cookiecutter.full_name}}"
+output: word_document
+---
 ```{r, include=F}
 library(ggplot2)
 library(pander)
@@ -19,7 +24,8 @@ pander(
 And a plot
 ----------
 
-```{r, fig.capture="some plot"}
+```{r some_plot, fig.cap="some figure"}
 ggplot(trans.data, mapping = aes(x=embarked, y=age, colour=survived)) +
 	   geom_boxplot()
+
 ```

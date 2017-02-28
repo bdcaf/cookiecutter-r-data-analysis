@@ -1,7 +1,5 @@
 R:=Rscript
 report_dir:=work/report
-FIGUREDIR= figures
-CACHEDIR= cache
 
 .PHONY= all clean
 
@@ -17,14 +15,15 @@ work/%.Rdata: r/create_%.R
 
 $(report_dir)/%.md : doc/%.Rmd
 	mkdir -p $(@D)
+	mkdir -p '$(report_dir)/$(basename $(@F))/'
 	echo $@
 	Rscript -e "require(knitr); require(markdown);" \
-	-e "require(knitr)" \
 	-e "require(pander)" \
 	-e "knitr::opts_knit[['set']](root.dir = normalizePath('./'))" \
-	-e "knitr::opts_chunk[['set']](fig.path='$(FIGUREDIR)/$*-')" \
-	-e "knitr::opts_chunk[['set']](cache.path='$(CACHEDIR)/$*-')" \
+	-e "knitr::opts_chunk[['set']](cache.path='$(report_dir)/$(basename $(@F))/')" \
+	-e "knitr::opts_chunk[['set']](fig.path='$(report_dir)/$(basename $(@F))/')" \
 	-e "knitr::opts_chunk[['set']](fig.lp='fig:')" \
+	-e "knitr::opts_chunk[['set']](fig.show='asis')" \
 	-e "knitr::opts_chunk[['set']](fig.align='center')" \
 	-e "knitr::opts_chunk[['set']](dpi=144, fig.width=7, fig.height=6)" \
 	-e "knitr::opts_chunk[['set']](echo=FALSE, warning=FALSE, results='asis');" \
@@ -47,7 +46,6 @@ articlean:
 
 docclean:
 	-rm -rf $(report_dir)/*
-	-rm -rf $(FIGUREDIR)/*
 # end cleaning 
 
 artifacts/requested_table.xlsx: r/write_p_xls.R work/p_data_nons.Rdata
