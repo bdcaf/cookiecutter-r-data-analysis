@@ -61,7 +61,7 @@ artifacts/%.pdf: $(REPORT_DIR)/%.pdf
 $(REPORT_DIR)/%.pdf: $(REPORT_DIR)/%.tex $(REPORT_DIR)/bibliography.bib
 	$(LMK) $<
 
-artifacts/%.pdf: doc/%.tex
+$(REPORT_DIR)/%.pdf: doc/%.tex $(REPORT_DIR)/bibliography.bib
 	$(LMK) $<
 
 # end generic 
@@ -88,6 +88,6 @@ work/transform.Rdata: work/titanic.Rdata
 $(REPORT_DIR)/titanic.md: work/transform.Rdata
 
 
-artifacts/sample_report.pdf: doc/bibliography.bib doc/sample_texonly.tex $(REPORT_DIR)/sample_calc.tex doc/knitr_preamble.tex
+$(REPORT_DIR)/sample_report.pdf: doc/bibliography.bib doc/sample_texonly.tex $(REPORT_DIR)/sample_calc.tex doc/knitr_preamble.tex
 
 # end deps 
