@@ -1,5 +1,6 @@
 <<prepare data, include=FALSE>>=
 library(ggplot2)
+library(dplyr)
 library(xtable)
 
 load('work/transform.Rdata')
@@ -9,12 +10,12 @@ load('work/transform.Rdata')
 
 \subsection{a table}
 
-There is a table.
+I can haz table \ref{tab:mine}.
 
 <<a_table>>=
 xtable(
 	   with(trans.data, table(class, gender)),
-	   caption="a pretty table of survival")
+	   caption="a pretty table of survival", label='tab:mine')
 @
 
 \subsection{a plot}
@@ -25,3 +26,15 @@ ggplot(trans.data, mapping = aes(x=embarked, y=age, colour=survived)) +
 @
 
 The plot is there at fig.\ref{fig:my_fig}.
+
+\subsection{some long text}
+<<a text, include=F>>=
+load('work/titanic.Rdata')
+
+tmp <- titanic %>% mutate(desc = paste(name, "was in", pclass,"class."))
+
+@
+
+Lets tell a story:
+
+\Sexpr{paste(tmp$desc, collapse=' And then ')}

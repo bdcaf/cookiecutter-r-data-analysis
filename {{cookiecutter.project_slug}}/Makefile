@@ -47,8 +47,8 @@ $(REPORT_DIR)/%.tex: doc/%.Rnw
 	-mkdir -p $(REPORT_DIR)	
 	$R  -e "require(knitr)" \
 		-e "knitr::opts_knit[['set']](root.dir = normalizePath('./'))" \
-		-e "knitr::opts_chunk[['set']](fig.path='$(FIGURE_DIR)/$*-')" \
-		-e "knitr::opts_chunk[['set']](cache.path='$(CACHEDIR)/$*-')" \
+		-e "knitr::opts_chunk[['set']](cache.path='$(REPORT_DIR)/$(basename $(@F))/')" \
+		-e "knitr::opts_chunk[['set']](fig.path='$(REPORT_DIR)/$(basename $(@F))/')" \
 		-e "knitr::opts_chunk[['set']](fig.lp='fig:')" \
 		-e "knitr::opts_chunk[['set']](echo=FALSE, warning=FALSE, results='asis', dpi=144, fig.width=4, fig.height=3)" \
 		-e "knitr::knit('$<', output='$@')"
