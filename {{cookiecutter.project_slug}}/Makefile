@@ -2,6 +2,7 @@ R:=Rscript
 REPORT_DIR:=work/report
 FIGURE_DIR= figures
 CACHEDIR= cache
+LMK=latexmk -pdf -f --interaction=nonstopmode -outdir=$(REPORT_DIR) -bibtex
 .PHONY= all clean
 
 all: reports data 
@@ -39,9 +40,9 @@ artifacts/%.docx: $(REPORT_DIR)/%.md
 
 
 ## latex report
-#$(REPORT_DIR)/%.tex: doc/%.tex
-	#-mkdir -p $(REPORT_DIR)	
-	#cp $< $@
+$(REPORT_DIR)/%.bib: doc/%.bib
+	-mkdir -p $(REPORT_DIR)	
+	cp $< $@
 
 $(REPORT_DIR)/%.tex: doc/%.Rnw
 	-mkdir -p $(REPORT_DIR)	
@@ -53,11 +54,15 @@ $(REPORT_DIR)/%.tex: doc/%.Rnw
 		-e "knitr::opts_chunk[['set']](echo=FALSE, warning=FALSE, results='asis', dpi=144, fig.width=4, fig.height=3)" \
 		-e "knitr::knit('$<', output='$@')"
 
-artifacts/%.pdf: $(REPORT_DIR)/%.tex
-	latexmk -pdf -f --interaction=nonstopmode -outdir=artifacts $<
+
+artifacts/%.pdf: $(REPORT_DIR)/%.pdf
+	cp $< $@
+
+$(REPORT_DIR)/%.pdf: $(REPORT_DIR)/%.tex $(REPORT_DIR)/bibliography.bib
+	$(LMK) $<
 
 artifacts/%.pdf: doc/%.tex
-	latexmk -pdf -f --interaction=nonstopmode -outdir=artifacts $<
+	$(LMK) $<
 
 # end generic 
 
