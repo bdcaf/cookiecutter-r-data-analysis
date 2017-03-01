@@ -39,9 +39,9 @@ artifacts/%.docx: $(REPORT_DIR)/%.md
 
 
 ## latex report
-$(REPORT_DIR)/%.tex: doc/%.tex
-	-mkdir -p $(REPORT_DIR)	
-	cp $< $@
+#$(REPORT_DIR)/%.tex: doc/%.tex
+	#-mkdir -p $(REPORT_DIR)	
+	#cp $< $@
 
 $(REPORT_DIR)/%.tex: doc/%.Rnw
 	-mkdir -p $(REPORT_DIR)	
@@ -83,6 +83,6 @@ work/transform.Rdata: work/titanic.Rdata
 $(REPORT_DIR)/titanic.md: work/transform.Rdata
 
 
-artifacts/sample_report.pdf: doc/bibliography.bib doc/sample_texonly.tex $(REPORT_DIR)/sample_calc.tex
+artifacts/sample_report.pdf: doc/bibliography.bib doc/sample_texonly.tex $(REPORT_DIR)/sample_calc.tex doc/knitr_preamble.tex
 
 # end deps 
