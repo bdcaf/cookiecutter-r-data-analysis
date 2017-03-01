@@ -56,6 +56,9 @@ $(REPORT_DIR)/%.tex: doc/%.Rnw
 artifacts/%.pdf: $(REPORT_DIR)/%.tex
 	latexmk -pdf -f --interaction=nonstopmode -outdir=artifacts $<
 
+artifacts/%.pdf: doc/%.tex
+	latexmk -pdf -f --interaction=nonstopmode -outdir=artifacts $<
+
 # end generic 
 
 #cleaning
@@ -80,6 +83,6 @@ work/transform.Rdata: work/titanic.Rdata
 $(REPORT_DIR)/titanic.md: work/transform.Rdata
 
 
-artifacts/sample_report.pdf: $(REPORT_DIR)/bibliography.bib doc/sample_texonly.tex
+artifacts/sample_report.pdf: doc/bibliography.bib doc/sample_texonly.tex $(REPORT_DIR)/sample_calc.tex
 
 # end deps 

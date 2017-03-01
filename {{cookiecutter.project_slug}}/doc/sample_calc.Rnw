@@ -5,35 +5,23 @@ library(xtable)
 load('work/transform.Rdata')
 @
 
-```{r, include=F}
-library(ggplot2)
-library(pander)
-
-load('work/transform.Rdata')
-
-```
-
 \section{example r code}
 
 \subsection{a table}
 
-
-Some fancy table
-----------------
-
+There is a table.
 
 <<a_table>>=
 xtable(
-	   with(trans.data, ftable(class, gender, survived)),
+	   with(trans.data, table(class, gender)),
 	   caption="a pretty table of survival")
 @
 
-And a plot
-----------
+\subsection{a plot}
 
-<<figure, fig.cap="a plot!!!">>=
-```{r some_plot, fig.cap="some figure"}
+<<my_fig, fig.cap="a plot!!!">>=
 ggplot(trans.data, mapping = aes(x=embarked, y=age, colour=survived)) +
 	   geom_boxplot()
+@
 
-```
+The plot is there at fig.\ref{fig:my_fig}.
