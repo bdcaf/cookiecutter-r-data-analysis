@@ -22,7 +22,19 @@ Workflow
  + Transformed data which can be recreated in the `work` directory
  + Output for publication or else is put in the `artifacts` folder
  + `R` source code is put in the `r` folder
- + `Tex` 
+ + Textual stuff like markdown, tex, rmd and rnw files in the doc
+ 	 folder
+ 
+
+
+Requirements
+------------
+
+This workflow has plenty of dependencies. The main ones are:
+ - R with knitr, pander, dplyr, ggplot packages
+ - pandoc for Word file
+ - latex for pdf generation.
+
 
 License
 -------
