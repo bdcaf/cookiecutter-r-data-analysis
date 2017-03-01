@@ -1,0 +1,39 @@
+<<prepare data, include=FALSE>>=
+library(ggplot2)
+library(xtable)
+
+load('work/transform.Rdata')
+@
+
+```{r, include=F}
+library(ggplot2)
+library(pander)
+
+load('work/transform.Rdata')
+
+```
+
+\section{example r code}
+
+\subsection{a table}
+
+
+Some fancy table
+----------------
+
+
+<<a_table>>=
+xtable(
+	   with(trans.data, ftable(class, gender, survived)),
+	   caption="a pretty table of survival")
+@
+
+And a plot
+----------
+
+<<figure, fig.cap="a plot!!!">>=
+```{r some_plot, fig.cap="some figure"}
+ggplot(trans.data, mapping = aes(x=embarked, y=age, colour=survived)) +
+	   geom_boxplot()
+
+```

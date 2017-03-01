@@ -1,27 +1,30 @@
 R:=Rscript
-report_dir:=work/report
-
+REPORT_DIR:=work/report
+FIGURE_DIR= figures
+CACHEDIR= cache
 .PHONY= all clean
 
 all: reports data 
 
 data: 
-reports: artifacts/titanic.docx
+reports: artifacts/titanic.docx artifacts/sample_report.pdf
 
 # generic commands
 
 work/%.Rdata: r/create_%.R
 	$R $< $@
 
-$(report_dir)/%.md : doc/%.Rmd
+## word report
+# figures are not showing up yet!
+$(REPORT_DIR)/%.md : doc/%.Rmd
 	mkdir -p $(@D)
-	mkdir -p '$(report_dir)/$(basename $(@F))/'
+	mkdir -p '$(REPORT_DIR)/$(basename $(@F))/'
 	echo $@
 	Rscript -e "require(knitr); require(markdown);" \
 	-e "require(pander)" \
 	-e "knitr::opts_knit[['set']](root.dir = normalizePath('./'))" \
-	-e "knitr::opts_chunk[['set']](cache.path='$(report_dir)/$(basename $(@F))/')" \
-	-e "knitr::opts_chunk[['set']](fig.path='$(report_dir)/$(basename $(@F))/')" \
+	-e "knitr::opts_chunk[['set']](cache.path='$(REPORT_DIR)/$(basename $(@F))/')" \
+	-e "knitr::opts_chunk[['set']](fig.path='$(REPORT_DIR)/$(basename $(@F))/')" \
 	-e "knitr::opts_chunk[['set']](fig.lp='fig:')" \
 	-e "knitr::opts_chunk[['set']](fig.show='asis')" \
 	-e "knitr::opts_chunk[['set']](fig.align='center')" \
@@ -31,8 +34,28 @@ $(report_dir)/%.md : doc/%.Rmd
 	-e "panderOptions('table.split.table', Inf)" \
 	-e "knit('$<', '$(@)'); "
 
-artifacts/%.docx: $(report_dir)/%.md
+artifacts/%.docx: $(REPORT_DIR)/%.md
 		pandoc $+ -o $@
+
+
+## latex report
+$(REPORT_DIR)/%.tex: doc/%.tex
+	-mkdir -p $(REPORT_DIR)	
+	cp $< $@
+
+$(REPORT_DIR)/%.tex: doc/%.Rnw
+	-mkdir -p $(REPORT_DIR)	
+	$R  -e "require(knitr)" \
+		-e "knitr::opts_knit[['set']](root.dir = normalizePath('./'))" \
+		-e "knitr::opts_chunk[['set']](fig.path='$(FIGURE_DIR)/$*-')" \
+		-e "knitr::opts_chunk[['set']](cache.path='$(CACHEDIR)/$*-')" \
+		-e "knitr::opts_chunk[['set']](fig.lp='fig:')" \
+		-e "knitr::opts_chunk[['set']](echo=FALSE, warning=FALSE, results='asis', dpi=144, fig.width=4, fig.height=3)" \
+		-e "knitr::knit('$<', output='$@')"
+
+artifacts/%.pdf: $(REPORT_DIR)/%.tex
+	latexmk -pdf -f --interaction=nonstopmode -outdir=artifacts $<
+
 # end generic 
 
 #cleaning
@@ -45,7 +68,7 @@ articlean:
 	-rm -rf artifacts/*
 
 docclean:
-	-rm -rf $(report_dir)/*
+	-rm -rf $(REPORT_DIR)/*
 # end cleaning 
 
 artifacts/requested_table.xlsx: r/write_p_xls.R work/p_data_nons.Rdata
@@ -54,5 +77,9 @@ artifacts/requested_table.xlsx: r/write_p_xls.R work/p_data_nons.Rdata
 # dependencies ###################
 work/titanic.Rdata: data/titanic.csv
 work/transform.Rdata: work/titanic.Rdata
-$(reportdir)/titanic.md: work/transform.Rdata
+$(REPORT_DIR)/titanic.md: work/transform.Rdata
+
+
+artifacts/sample_report.pdf: $(REPORT_DIR)/bibliography.bib doc/sample_texonly.tex
+
 # end deps 
