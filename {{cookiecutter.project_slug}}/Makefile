@@ -28,7 +28,6 @@ $(REPORT_DIR)/%.md : doc/%.Rmd
 	-e "knitr::opts_chunk[['set']](fig.path='$(REPORT_DIR)/$(basename $(@F))/')" \
 	-e "knitr::opts_chunk[['set']](fig.lp='fig:')" \
 	-e "knitr::opts_chunk[['set']](fig.show='asis')" \
-	-e "knitr::opts_chunk[['set']](fig.align='center')" \
 	-e "knitr::opts_chunk[['set']](dpi=144, fig.width=7, fig.height=6)" \
 	-e "knitr::opts_chunk[['set']](echo=FALSE, warning=FALSE, results='asis');" \
 	-e "panderOptions('table.split.cells', 20)" \
