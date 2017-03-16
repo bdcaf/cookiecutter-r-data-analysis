@@ -1,7 +1,11 @@
 R data analysis template
 ========================
 
-A template for my standard R workflow.  
+Over years I came up with a quite standardized template. Though it usually degraded to copying a number of files from previous projects.  With this template I try to formalize this approach.
+
+[cookiecutter](https://github.com/audreyr/cookiecutter) is a tool to template new project files and folder structures.  It still seems quite active and has templates beyond a single language it seems a promising home for this task.
+ 
+These templates also contain some sample code for my reference how to achieve typical tasks.  The most code is written in R files and derivatives like rmd and rnw.  But I also make use of `make` for building the project, and additional shell utilites like latexmk and pandoc.  At some future point I will provide a setup script - at the moment you will need to weed through dependencies manually.
 
 Requirements
 ------------
