@@ -1,6 +1,6 @@
 # {{cookiecutter.project_name}}
 
-Data analysis for {{cookiecutter.project_desc}}.
+Data analysis for {{cookiecutter.project_short_description}}.
 Created by {{cookiecutter.full_name}} {{cookiecutter.email}}.
 
 Started on {{cookiecutter.release_date}}. 
