@@ -7,5 +7,8 @@
     "project_short_description": "A short description of the project",
     "release_date": "{% now 'local' %}",
     "version": "0.1.0",
-    "_extensions": ["jinja2_time.TimeExtension"]
+    "_extensions": ["jinja2_time.TimeExtension"],
+     "_copy_without_render": [
+        "doc/knitr_preamble.tex"
+    ]
 }
