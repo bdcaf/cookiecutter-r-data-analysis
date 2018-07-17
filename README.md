@@ -15,10 +15,14 @@ this *and* a Make based workflow seems a waste.  I start the package
 [vignetteEngineMake](https://github.com/bdcaf/vignetteEngineMake) to
 bring make based vignettes to R packages. 
 
-2018-07-17  I am currently considering integrating this with 
+*2018-07-17*  I am currently considering integrating this with 
 [vignetteEngineMake](https://github.com/bdcaf/vignetteEngineMake).
 The idea is to use `devtools` to create the package - however I find
-for larger vignettes a make bases workflow more helpful.  
+for larger vignettes a make based workflow more helpful.  In
+particular I am thinking about scripts that download huge datasets
+from servers - it is not suggested to pack those into R packages -
+however I need to work on code that needs datasets going into
+gigabytes to reasonable show it's performance.
 
 Requirements
 ------------
@@ -31,6 +35,11 @@ Install `cookiecutter` command line: `brew install cookiecutter`
 Usage
 -----
 Generate a new Cookiecutter template layout: `cookiecutter gh:bdcaf/cookiecutter-r-data-analysis-template`    
+For use with 
+[vignetteEngineMake](https://github.com/bdcaf/vignetteEngineMake) run
+above command in the vignettes directory and afterwards copy the
+generated  `.mk` file with the same name as the directory to the
+vignettes path.
 
 Workflow
 ----------
@@ -42,16 +51,21 @@ Workflow
  + Textual stuff like markdown, tex, rmd and rnw files in the doc
  	 folder
  
+Notes
+------
+
+- When used *within* a R package I find it useful to put reused code in
+the packages R folder so it can be reloaded using `devtools::load_all`
+or apropriate version. 
 
 
 Requirements
 ------------
 
-This workflow has plenty of dependencies. The main ones are:
+This exemplary workflow has plenty of dependencies. The main ones are:
  - R with knitr, pander, dplyr, ggplot packages
  - pandoc for Word file
  - latex for pdf generation.
-
 
 License
 -------
