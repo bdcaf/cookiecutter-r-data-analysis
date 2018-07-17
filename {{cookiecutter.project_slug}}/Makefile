@@ -1,6 +1,5 @@
 R:=Rscript
-REPORT_DIR:=doc/report
-FIGURE_DIR= figures
+REPORT_DIR:=work/report
 CACHEDIR= cache
 LMK=latexmk -pdf -f --interaction=nonstopmode -outdir=$(REPORT_DIR) -bibtex
 .PHONY= all clean
