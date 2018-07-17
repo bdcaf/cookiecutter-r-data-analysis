@@ -1,6 +1,8 @@
-<<prepare data>>=
+<<prepare>>=
 library(xtable)
 @
+
+Note for some reason I don't get the code echoed.  Can't quickly find out why.
 
 \section{example r code from cern}
 
@@ -48,7 +50,7 @@ data/mass.rdata: dataraw/jpsimumu.csv r/cern_invmass.r r/cern_magnitude.r
 
 I then can just load it:
 
-<<>>=
+<<loaddata,echo=TRUE>>=
 jpsimass <- readRDS("data/mass.Rdata")
 @
 

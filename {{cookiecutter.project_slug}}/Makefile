@@ -1,5 +1,5 @@
 R:=Rscript
-REPORT_DIR:=work/report
+REPORT_DIR:=doc/report
 FIGURE_DIR= figures
 CACHEDIR= cache
 LMK=latexmk -pdf -f --interaction=nonstopmode -outdir=$(REPORT_DIR) -bibtex
@@ -28,9 +28,6 @@ $(REPORT_DIR)/%.md : doc/%.Rmd
 	-e "knitr::opts_chunk[['set']](fig.lp='fig:')" \
 	-e "knitr::opts_chunk[['set']](fig.show='asis')" \
 	-e "knitr::opts_chunk[['set']](dpi=144, fig.width=7, fig.height=6)" \
-	-e "knitr::opts_chunk[['set']](echo=FALSE, warning=FALSE, results='asis');" \
-	-e "panderOptions('table.split.cells', 20)" \
-	-e "panderOptions('table.split.table', Inf)" \
 	-e "knit('$<', '$(@)'); "
 
 artifacts/%.docx: $(REPORT_DIR)/%.md
@@ -49,7 +46,8 @@ $(REPORT_DIR)/%.tex: doc/%.Rnw
 		-e "knitr::opts_chunk[['set']](cache.path='$(REPORT_DIR)/$(basename $(@F))/')" \
 		-e "knitr::opts_chunk[['set']](fig.path='$(REPORT_DIR)/$(basename $(@F))/')" \
 		-e "knitr::opts_chunk[['set']](fig.lp='fig:')" \
-		-e "knitr::opts_chunk[['set']](echo=FALSE, warning=FALSE, results='asis', dpi=144, fig.width=4, fig.height=3)" \
+		-e "knitr::opts_chunk[['set']](echo=TRUE, warning=FALSE)" \
+		-e "knitr::opts_chunk[['set']](results='asis', dpi=144, fig.width=4, fig.height=3)" \
 		-e "knitr::knit('$<', output='$@')"
 
 
@@ -65,10 +63,10 @@ $(REPORT_DIR)/%.pdf: doc/%.tex $(REPORT_DIR)/bibliography.bib
 # end generic 
 
 #cleaning
-clean: docclean alldocclean dataclean
+clean: docclean articlean dataclean
 
 dataclean:
-	-rm -rf work/*.Rdata
+	-rm -rf data/*.Rdata
 
 articlean:
 	-rm -rf artifacts/*
