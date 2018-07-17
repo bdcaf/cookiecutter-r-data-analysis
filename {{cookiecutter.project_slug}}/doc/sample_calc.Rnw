@@ -1,40 +1,64 @@
-<<prepare data, include=FALSE>>=
-library(ggplot2)
-library(dplyr)
+<<prepare data>>=
 library(xtable)
-
-load('work/transform.Rdata')
 @
 
-\section{example r code}
+\section{example r code from cern}
+
+This is a shortened version of the data shown at
+\url{http://opendata.cern.ch/record/300}.
+
+Just imagine the data would be a gigabyte sized file - so you wouldn't want to
+keep downloading it for every run.
+
+These lines in the Makefile download it - however I prefer to include it in
+the file `dependencies.makefile`:
+
+
+\begin{verbatim}
+dataraw/Jpsimumu.csv:
+	curl "http://opendata.cern.ch/record/545/files/Jpsimumu.csv" -o "$@"
+\end{verbatim}
+
+So I can here use it locally:
+
+<<>>=
+jpsi <- read.csv("dataraw/Jpsimumu.csv")
+@
 
 \subsection{a table}
 
 I can haz table \ref{tab:mine}.
 
 <<a_table>>=
-xtable(
-	   with(trans.data, table(class, gender)),
-	   caption="a pretty table of survival", label='tab:mine')
+xtable(head(jpsi),
+       caption="head of jpsi", label='tab:mine')
+@
+
+I cound follow through the tutorial...
+however suppose in a larger project you'd like the results cached and
+functions split into several files.  the mass data is created in the
+makefile with the rules for \verb+data/mass.rdata+  - note the
+\verb+r/create_mass.r+ is automatically added to the dependencies.
+
+heres the lines from \verb+dependencies.makefile+:
+
+\begin{verbatim}
+data/mass.rdata: dataraw/jpsimumu.csv r/cern_invmass.r r/cern_magnitude.r
+\end{verbatim}
+
+I then can just load it:
+
+<<>>=
+jpsimass <- readRDS("data/mass.Rdata")
 @
 
 \subsection{a plot}
 
 <<my_fig, fig.cap="a plot!!!">>=
-ggplot(trans.data, mapping = aes(x=embarked, y=age, colour=survived)) +
-	   geom_boxplot()
+hist(jpsimass, breaks = 500,
+     xlab = "Mass (GeV)",
+     lty="blank",
+     col=rgb(0,0,1,1/4), main="Invariant Mass Histogram")
 @
 
 The plot is there at fig.\ref{fig:my_fig}.
-
-\subsection{some long text}
-<<a text, include=F>>=
-load('work/titanic.Rdata')
-
-tmp <- titanic %>% mutate(desc = paste(name, "was in", pclass,"class."))
-
-@
-
-Lets tell a story:
-
-\Sexpr{paste(tmp$desc, collapse=' And then ')}

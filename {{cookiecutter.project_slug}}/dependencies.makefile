@@ -1,12 +1,13 @@
-artifacts/requested_table.xlsx: r/write_p_xls.R work/p_data_nons.Rdata
-	$(R) '$<' $@
+data: 
+reports: artifacts/cern.docx artifacts/vignette.pdf
+
+
+# raw data - let's use cerns public data from the example at: http://opendata.cern.ch/record/300
+dataraw/Jpsimumu.csv:
+	curl "http://opendata.cern.ch/record/545/files/Jpsimumu.csv" -o "$@"
 
 # dependencies ###################
-work/titanic.Rdata: data/titanic.csv
-work/transform.Rdata: work/titanic.Rdata
-$(REPORT_DIR)/titanic.md: work/transform.Rdata
+$(REPORT_DIR)/cern.md $(REPORT_DIR)/sample_texonly.tex: data/mass.Rdata
 
-
-$(REPORT_DIR)/sample_report.pdf: doc/bibliography.bib doc/sample_texonly.tex $(REPORT_DIR)/sample_calc.tex doc/knitr_preamble.tex
-
+$(REPORT_DIR)/vignette.pdf: doc/bibliography.bib doc/sample_texonly.tex $(REPORT_DIR)/sample_calc.tex doc/knitr_preamble.tex
 # end deps 

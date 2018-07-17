@@ -7,12 +7,12 @@ LMK=latexmk -pdf -f --interaction=nonstopmode -outdir=$(REPORT_DIR) -bibtex
 
 all: reports data 
 
-data: 
-reports: artifacts/titanic.docx artifacts/sample_report.pdf
-
 ## data
-work/%.Rdata: r/create_%.R
+data/%.Rdata: r/create_%.R
 	$R $< $@
+
+## and raw data if required
+data/mass.Rdata: dataraw/Jpsimumu.csv r/cern_invmass.R r/cern_magnitude.R
 
 ## word report
 # figures are not showing up yet!

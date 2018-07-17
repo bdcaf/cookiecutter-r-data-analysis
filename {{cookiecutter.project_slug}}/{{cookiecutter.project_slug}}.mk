@@ -11,8 +11,8 @@ endef
 THIS:={{ cookiecutter.project_slug }}
 
 $(THIS).pdf:
-	cd $(THIS); make vignette.pdf
-	cp $(THIS)/vignette.pdf $@
+	cd $(THIS); make artifacts/vignette.pdf
+	cp $(THIS)/artifacts/vignette.pdf $@
 
 include Makefile
 

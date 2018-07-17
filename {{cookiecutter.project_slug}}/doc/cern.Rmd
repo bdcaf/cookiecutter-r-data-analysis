@@ -1,0 +1,61 @@
+---
+title: "An example report"
+author: "{{cookiecutter.full_name}}"
+output: word_document
+---
+```{r}
+library(pander)
+```
+
+This is a shortened version of the data shown at
+[Cern](http://opendata.cern.ch/record/300).  Just imagine the data
+would be a gigabyte sized file - so you wouldn't want to keep
+downloading it for every run.
+
+These lines in the Makefile download it - however I prefer to include
+it in the file `dependencies.makefile`:
+```
+dataraw/Jpsimumu.csv:
+	curl "http://opendata.cern.ch/record/545/files/Jpsimumu.csv" -o "$@"
+```
+
+So I can here use it locally:
+
+```{r}
+jpsi <- read.csv("dataraw/Jpsimumu.csv")
+```
+
+
+Some fancy table
+----------------
+
+```{r}
+pander::pander( head(jpsi), 
+       caption="head of the table")
+```
+
+i cound follow through the tutorial...  
+however suppose in a larger project you'd like the results cached and
+functions split into several files.  the mass data is created in the
+makefile with the rules for `data/mass.rdata`  - note the
+`r/create_mass.r` is automatically added to the dependencies.
+
+heres the lines from `dependencies.makefile`:
+
+```
+data/mass.rdata: dataraw/jpsimumu.csv r/cern_invmass.r r/cern_magnitude.r
+```
+
+I then can just load it:
+
+```{r}
+jpsimass <- readRDS("data/mass.Rdata")
+```
+
+
+And a plot
+----------
+
+```{r some_plot, fig.cap="the histogram from the tutorial"}
+hist(jpsimass, breaks = 500, xlab = "Mass (GeV)", lty="blank", col=rgb(0,0,1,1/4), main="Invariant Mass Histogram")
+```
