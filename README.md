@@ -10,7 +10,15 @@ These templates also contain some sample code for my reference how to achieve ty
 News
 ------
 
-I am learning more and more about the R package workflow.  Combining this *and* a Make based workflow seems a waste.  I start the package [vignetteEngineMake](https://github.com/bdcaf/vignetteEngineMake) to bring make based vignettes to R packages.   Watch this for future developments.
+I am learning more and more about the R package workflow.  Combining
+this *and* a Make based workflow seems a waste.  I start the package
+[vignetteEngineMake](https://github.com/bdcaf/vignetteEngineMake) to
+bring make based vignettes to R packages. 
+
+2018-07-17  I am currently considering integrating this with 
+[vignetteEngineMake](https://github.com/bdcaf/vignetteEngineMake).
+The idea is to use `devtools` to create the package - however I find
+for larger vignettes a make bases workflow more helpful.  
 
 Requirements
 ------------
