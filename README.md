@@ -34,7 +34,7 @@ Install `cookiecutter` command line: `brew install cookiecutter`
 
 Usage
 -----
-Generate a new Cookiecutter template layout: `cookiecutter gh:bdcaf/cookiecutter-r-data-analysis-template`    
+Generate a new Cookiecutter template layout: `cookiecutter gh:bdcaf/cookiecutter-r-data-analysis`    
 For use with 
 [vignetteEngineMake](https://github.com/bdcaf/vignetteEngineMake) run
 above command in the vignettes directory and afterwards copy the

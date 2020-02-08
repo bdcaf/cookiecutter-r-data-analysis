@@ -1,13 +1,25 @@
-R:=Rscript
-REPORT_DIR:=work/report
+REPORT_DIR:=render/report
 CACHEDIR= cache
 LMK=latexmk -pdf -f --interaction=nonstopmode -outdir=$(REPORT_DIR) -bibtex
 .PHONY= all clean
 
+R:=Rscript
+knitBase:= $R -e "require(knitr); require(markdown);" \
+	-e "require(pander)" \
+	-e "knitr::opts_knit[['set']](root.dir = normalizePath('./'))" \
+	-e "knitr::opts_chunk[['set']](cache.path='$(REPORT_DIR)/$(basename $(@F))/')" \
+	-e "knitr::opts_chunk[['set']](fig.path='$(REPORT_DIR)/$(basename $(@F))/')" \
+	-e "knitr::opts_chunk[['set']](fig.lp='fig:')" \
+	-e "knitr::opts_chunk[['set']](fig.show='asis')"
+
 all: reports data 
 
+## data-raw
+data-raw/%: data-raw/Makefile
+	make -C data-raw $(patsubst data-raw/%,%,$@)
+
 ## data
-data/%.Rdata: r/create_%.R
+data/%.RDS: scripts/create_%.R
 	$R $< $@
 
 ## and raw data if required
@@ -19,7 +31,7 @@ $(REPORT_DIR)/%.md : doc/%.Rmd
 	mkdir -p $(@D)
 	mkdir -p '$(REPORT_DIR)/$(basename $(@F))/'
 	echo $@
-	Rscript -e "require(knitr); require(markdown);" \
+	$R -e "require(knitr); require(markdown);" \
 	-e "require(pander)" \
 	-e "knitr::opts_knit[['set']](root.dir = normalizePath('./'))" \
 	-e "knitr::opts_chunk[['set']](cache.path='$(REPORT_DIR)/$(basename $(@F))/')" \

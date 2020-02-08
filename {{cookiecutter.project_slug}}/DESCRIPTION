@@ -1,0 +1,15 @@
+Package: {{cookiecutter.project_slug}}
+Title: Wrapper for {{cookiecutter.project_name}}
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "{{cookiecutter.first_name}}",
+           family = "{{cookiecutter.last_name}}",
+           role = c("aut", "cre"),
+           email = "{{cookiecutter.email}}",
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+Description: This package is a wrapper for {{cookiecutter.project_name}}.
+License: What license it uses
+URL: https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}
+BugReports: https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/issues
+Encoding: UTF-8
+LazyData: true

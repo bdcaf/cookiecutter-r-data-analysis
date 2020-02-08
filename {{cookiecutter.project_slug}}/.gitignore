@@ -1,4 +1,3 @@
-dataraw/*
+data-raw/*
 data/*
-work/*
-doc/report/*
+render/*

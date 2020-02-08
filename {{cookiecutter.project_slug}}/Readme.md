@@ -10,10 +10,24 @@ All results are put in the `artifacts` directory.
 
 The finalized project should be able to run using `make`.
 
-For now I use [kaggles](https://www.kaggle.com) [titanic
-train.csv](https://www.kaggle.com/c/titanic/data) as sample data.
-Once I have some time I will replace it with something simpler.
 
+## Example Project
+When checked out it contains the working example project. 
+This works on [CERN Higgs data](http://opendata.cern.ch/record/300).
+
+The example project consist of following steps:
+
+1. Obtain input data:
+ a. [CERN Higgs data](http://opendata.cern.ch/record/300) is downloaded to 
+2. A sample conversion to `transform.Rdata`
+3. Create a markdown report which is then converted to `.docx` (word)
+   `artifacts/titanic.docx` via [pandoc](https://pandoc.org/)
+4. Create a `Rnw` report which is then rendered with other tex files to
+   a `pdf`: `artifacts/sample_report.pdf` via `latexmk`.
+
+If all is setup `make` should build all data files.
+
+Individual files are created using e.g. `make work/transform.RDS`
 ## Idioms
 
 ### General
@@ -24,9 +38,14 @@ Input data often comes in annoying characters - I find the command [detox](https
 
 ### Folder structure
 
+I came up with following structure. 
+In particular the folders `data`, `render`, `artifacts` are excluded from git and also may recreate automatically.
+The files in folder `data-raw` are not altered by the scripts.
+
 #### R
 - `R` holds R commands
-- 'scripts' R scripts 
+- 'scripts' R scripts that create data and binary files such as images.
+- `doc` holds `Rnw` and `Rmd` files.
 
 #### data
 - `data-raw` for unprocessed data. Files in here must not get altered by scripts.
@@ -38,8 +57,8 @@ Input data often comes in annoying characters - I find the command [detox](https
 
 ### Script Patterns
 
-#### `scripts/create_(dataname).R`
-A script to create `data/(dataname).RDS`.
+#### `scripts/create_myname.R`
+A script to create `data/myname.RDS`.
 By using this pattern the Makefile rule is automatic.
 
 I set it so the target file is also first argument. 
@@ -55,21 +74,6 @@ saveRDS(mydata, file=args[[1]])
 
 
 
-## Example Project
-
-The example project consist of following steps:
-
-1. Convert `titanic.csv` into native R data (`titanic.Rdata`)
-2. A sample conversion to `transform.Rdata`
-3. Create a markdown report which is then converted to `.docx` (word)
-   `artifacts/titanic.docx` via [pandoc](https://pandoc.org/)
-4. Create a `Rnw` report which is then rendered with other tex files to
-   a `pdf`: `artifacts/sample_report.pdf` via `latexmk`.
-
-If all is setup correctly `make` should build all data files.
-
-Individual files can be created using e.g. `make work/transform.Rdata`
-
 
 ## Tricks
 
@@ -78,3 +82,19 @@ Individual files can be created using e.g. `make work/transform.Rdata`
 - git only stores files - not directories. To keep the structure there are empty files `.gitkeep`.
 - git does not handle binary files well. Use [git lfs](https://git-lfs.github.com/) for binary files like `Rdata` or preferable store them externally.
 
+### R
+
+- I reference files from the project root. Both in Makefile and also in R. This helps to keep references consistent.
+
+### Make
+
+- For tasks that are independent on the rest of the project a separate `Makefile` may be used in a subdir. I perform the download of external data to `data-raw`. The file `data-raw/Makefile` contains the code. 
+Inside the main `Makefile` I use the code:
+
+```
+data-raw/%: data-raw/Makefile
+	make -C data-raw $(patsubst data-raw/%,%,$@)
+```
+
+This way even if `data-raw/Makefile` defines more data files but those are not used. 
+Only the required ones should download to save space and bandwidth.
