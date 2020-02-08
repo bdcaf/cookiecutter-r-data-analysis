@@ -85,6 +85,7 @@ saveRDS(mydata, file=args[[1]])
 
 - I (ab)use `devtools`.  In particular often `devtools::load_all()`.  This requires the folder be named as valid R package and the `DESCRIPTION` file being valid.  The most common issue that an R package name may only contain characters, numbers and `.`, and must start with a character.
 
+
 ### git
 
 - git only stores files - not directories. To keep the structure there are empty files `.gitkeep`.

@@ -2,8 +2,8 @@ Package: {{cookiecutter.project_slug}}
 Title: Wrapper for {{cookiecutter.project_name}}
 Version: 0.0.0.9000
 Authors@R: 
-    person(given = "{{cookiecutter.first_name}}",
-           family = "{{cookiecutter.last_name}}",
+    person(given = "{{ " ".join(cookiecutter.full_name.split()[:-1]) }}",
+           family = "{{ cookiecutter.full_name.split()[-1] }}",
            role = c("aut", "cre"),
            email = "{{cookiecutter.email}}",
            comment = c(ORCID = "YOUR-ORCID-ID"))

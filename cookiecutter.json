@@ -1,7 +1,5 @@
 {
-    "first_name": "Your name",
-    "last_name": "Your name",
-    "full_name": "{{ cookiecutter.first_name }} {{ cookiecutter.last_name }}",
+    "full_name": "Your name",
     "email": "Your address email (eq. you@example.com)",
     "github_username": "Your github username",
     "project_name": "Name of the project",
