@@ -43,7 +43,7 @@ In particular the folders `data`, `render`, `artifacts` are excluded from git an
 The files in folder `data-raw` are not altered by the scripts.
 
 #### R
-- `R` holds R commands
+- `R` holds R commands, these should be loadable with `devtools_load_all()`.
 - 'scripts' R scripts that create data and binary files such as images.
 - `doc` holds `Rnw` and `Rmd` files.
 
@@ -77,14 +77,19 @@ saveRDS(mydata, file=args[[1]])
 
 ## Tricks
 
+### general
+
+- I reference files from the project root. Both in Makefile and also in R. This helps to keep references consistent.
+
+### R
+
+- I (ab)use `devtools`.  In particular often `devtools::load_all()`.  This requires the folder be named as valid R package and the `DESCRIPTION` file being valid.  The most common issue that an R package name may only contain characters, numbers and `.`, and must start with a character.
+
 ### git
 
 - git only stores files - not directories. To keep the structure there are empty files `.gitkeep`.
 - git does not handle binary files well. Use [git lfs](https://git-lfs.github.com/) for binary files like `Rdata` or preferable store them externally.
 
-### R
-
-- I reference files from the project root. Both in Makefile and also in R. This helps to keep references consistent.
 
 ### Make
 
