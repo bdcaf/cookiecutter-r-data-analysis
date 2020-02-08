@@ -3,8 +3,6 @@
 Data analysis for {{cookiecutter.project_short_description}}.
 Created by {{cookiecutter.full_name}} {{cookiecutter.email}}.
 
-Started on {{cookiecutter.release_date}}. 
-
 All results are put in the `artifacts` directory.
 
 ## Quick start 
@@ -13,9 +11,10 @@ The project can be built typing `make`.
 
 
 ## Example Project
+
 When checked out it contains the working example project. 
 This works on [CERN Higgs data](http://opendata.cern.ch/record/300).
-It follows the first few steps along the [Instruction for use of CMS Open Data in R](http://opendata.cern.ch/record/5102).
+It follows the first steps along the [Instruction for use of CMS Open Data in R](http://opendata.cern.ch/record/5102).
 
 
 The example project consist of following steps:
@@ -23,7 +22,7 @@ The example project consist of following steps:
 0. Obtain input data:
  a. [CERN Higgs data](http://opendata.cern.ch/record/300) is downloaded to `data-raw/`
 1. Create R data: `data-raw/Jpsimumu.csv` is read into `data/jspi.RDS`
-2. Manipulate R data: 
+2. Manipulate R data: `data/jspi.RDS` is used to calculate `data/mass.RDS`
 3. Create a markdown report which is then converted to `.docx` (word)
    `artifacts/titanic.docx` via [pandoc](https://pandoc.org/)
 4. Create a `Rnw` report which is then rendered with other tex files to
@@ -49,7 +48,7 @@ The files in folder `data-raw` are not altered by the scripts.
 #### R
 - `R` holds R commands, these should be loadable with `devtools_load_all()`.
 - 'scripts' R scripts that create data and binary files such as images.
-- `doc` holds `Rnw` and `Rmd` files.
+- `doc` holds `Rnw` and `Rmd` files. It can also hole `tex` and `md` files which will be just copied over into the render directory.
 
 #### data
 - `data-raw` for unprocessed data. Files in here must not get altered by scripts.
@@ -67,7 +66,10 @@ I use the perl script `scripts/recursive.pl` to walk through a number of files t
 For now I only look for the `readRDS` command in R code, more definitely to come. 
 Likely it may not catch some dependencies. Easiest is to add them yourself to the Makefile - or as I prefer an imported one here I called it `make.project`.
 It`s difficult to figure out modifications in functions under `R`. If I depend on them I add them to this file.
+I also want it to catch included `tex` files. 
 
+Either way filling in this requirements manually in `make.project` is no big deal for reasonably sized projects.
+For huge ones it pays to adapt `scripts/recursive.pl`, but I doubt this generalizes.
 
 #### `scripts/create_myname.R`
 A script to create `data/myname.RDS`.

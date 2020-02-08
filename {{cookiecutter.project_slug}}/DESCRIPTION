@@ -1,6 +1,6 @@
 Package: {{cookiecutter.project_slug}}
 Title: Wrapper for {{cookiecutter.project_name}}
-Version: 0.0.0.9000
+Version: {{ cookiecutter.version }}
 Authors@R: 
     person(given = "{{ " ".join(cookiecutter.full_name.split()[:-1]) }}",
            family = "{{ cookiecutter.full_name.split()[-1] }}",

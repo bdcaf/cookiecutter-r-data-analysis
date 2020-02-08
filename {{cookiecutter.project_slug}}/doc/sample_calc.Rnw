@@ -24,7 +24,7 @@ dataraw/Jpsimumu.csv:
 So I can here use it locally:
 
 <<>>=
-jpsi <- read.csv("dataraw/Jpsimumu.csv")
+jpsi <- read.csv("data-raw/Jpsimumu.csv")
 @
 
 \subsection{a table}
@@ -36,22 +36,16 @@ xtable(head(jpsi),
        caption="head of jpsi", label='tab:mine')
 @
 
-I cound follow through the tutorial...
+I could follow through the tutorial...
 however suppose in a larger project you'd like the results cached and
 functions split into several files.  the mass data is created in the
 makefile with the rules for \verb+data/mass.rdata+  - note the
 \verb+r/create_mass.r+ is automatically added to the dependencies.
 
-heres the lines from \verb+dependencies.makefile+:
-
-\begin{verbatim}
-data/mass.rdata: dataraw/jpsimumu.csv r/cern_invmass.r r/cern_magnitude.r
-\end{verbatim}
-
 I then can just load it:
 
 <<loaddata,echo=TRUE>>=
-jpsimass <- readRDS("data/mass.Rdata")
+jpsimass <- readRDS("data/mass.RDS")
 @
 
 \subsection{a plot}

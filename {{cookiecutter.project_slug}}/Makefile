@@ -3,7 +3,8 @@ CACHEDIR= cache
 LMK=latexmk -pdf -f --interaction=nonstopmode -outdir=$(REPORT_DIR) -bibtex
 .PHONY= all clean
 WORKSCRIPTS:=$(wildcard scripts/*.R) 
-DOCSCRIPTS:=$(wildcard doc/*.Rnw) $(wildcard doc/*/*.Rnw) $(doc/*.Rmd) $(doc/*/*.Rmd)
+DOCSCRIPTS:=$(wildcard doc/*.Rnw) $(wildcard doc/*/*.Rnw) $(wildcard doc/*.Rmd) $(wildcard doc/*/*.Rmd) $(wildcard doc/*.tex) $(wildcard doc/*/*.tex)
+.PHONY: make.auto clean
 
 R:=Rscript
 knitBase:= $R -e "require(knitr); require(markdown);" \
@@ -14,7 +15,9 @@ knitBase:= $R -e "require(knitr); require(markdown);" \
 	-e "knitr::opts_chunk[['set']](fig.lp='fig:')" \
 	-e "knitr::opts_chunk[['set']](fig.show='asis')"
 
-all: reports data 
+all: reports 
+
+reports: artifacts/cern.docx artifacts/vignette.pdf
 
 make.auto: $(WORKSCRIPTS) $(DOCSCRIPTS)
 	@perl scripts/recursive.pl $^ > $@
@@ -30,6 +33,12 @@ data/%.RDS: scripts/create_%.R
 	$R $< $@
 
 
+$(REPORT_DIR)/%.md : doc/%.md
+	-mkdir -p $(@D)
+	cp $< $@
+$(REPORT_DIR)/%.tex : doc/%.tex
+	-mkdir -p $(@D)
+	cp $< $@
 ## word report
 # figures are not showing up yet!
 $(REPORT_DIR)/%.md : doc/%.Rmd
@@ -72,10 +81,6 @@ artifacts/%.pdf: $(REPORT_DIR)/%.pdf
 
 $(REPORT_DIR)/%.pdf: $(REPORT_DIR)/%.tex $(REPORT_DIR)/bibliography.bib
 	$(LMK) $<
-
-$(REPORT_DIR)/%.pdf: doc/%.tex $(REPORT_DIR)/bibliography.bib
-	$(LMK) $<
-
 # end generic 
 
 #cleaning
@@ -90,5 +95,3 @@ articlean:
 docclean:
 	-rm -rf $(REPORT_DIR)/*
 # end cleaning 
-
-include dependencies.makefile

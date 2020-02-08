@@ -1,38 +1,74 @@
 #! /usr/bin/env perl
 #
-# Short description for recursive.pl
-#
-# Author Clemens Ager <clemens.ager@gmail.com>
-# Version 0.1
-# Copyright (C) 2020 Clemens Ager <clemens.ager@gmail.com>
-# Modified On 2020-02-08 17:23
-# Created  2020-02-08 17:23
+# Script that analyses R scripts for loaded data files and linked subreports.
 #
 use strict;
 use warnings;
 
+my $reportdir = "render/report";
 my $rfile = qr/.*\.R(md|nw)?$/;
+my $copyfile = qr/.*\.(tex|md)$/;
 
-sub rname{
+sub rname {
   my ($fname) = @_;
-  $fname =~ s/^doc\/(.*)\.Rmd$/render\/$1.md/;
-  $fname =~ s/^doc\/(.*)\.Rnw$/render\/$1.tex/;
-  $fname =~ s/^scripts\/create_(.*)\.R$/data\/$1.RDS/;
+  $fname =~ s#^doc/(.*)\.Rnw$#$reportdir/$1.tex#;
+  $fname =~ s#^doc/(.*)\.Rmd$#$reportdir/$1.md#;
+  $fname =~ s#^scripts/create_(.*)\.R$#data/$1.RDS#;
   return $fname;
+}
+
+sub processr {
+  my ($file) = @_;
+	if ($file =~ $rfile ) {
+		my $name = rname($file);
+		my @deps = ();
+		open(DATA, '<', $file) or die "Unable to open file $file!";
+		while (<DATA>) {
+			if (/readRDS\("([^"]+)"\)/){
+				push @deps, $1;
+			}
+		}
+		if ((scalar @deps) > 0 ){
+			print "$name: ";
+			print join " ", @deps;
+			print "\n\n";
+		}
+	}
+}
+
+sub copyname {
+  my ($fname) = @_;
+  $fname =~ s#^doc/(.*)\.R?(tex|md|nw)$#$reportdir/$1.$2#;
+  return $fname;
+}
+sub processcopy {
+  my ($file) = @_;
+	if ($file =~ $copyfile ) {
+		my $name = copyname($file);
+		my @deps = ();
+		open(DATA, '<', $file) or die "Unable to open file $file!";
+		while (<DATA>) {
+			if (/\\input\{([^}]+)\}/){
+				push @deps, "$1.tex";
+			}
+			if (/\\include\{([^}]+)\}/){
+				push @deps, $1;
+			}
+		}
+		if ((scalar @deps) > 0 ){
+			print "$name: ";
+			print join " ", @deps;
+			print "\n";
+		}
+	}
 }
 
 my @files = @ARGV;
 foreach my $file (@files) {
-  if ($file =~ $rfile) {
-    my $name = rname($file);
-    print "$name: ";
-    open(DATA, '<', $file) or die "Unable to open file $file!";
-    while (<DATA>) {
-      if (/readRDS\("([^"]+)"\)/){
-	print $1;
-      }
-    }
-    print "\n";
-  }
-  #print $file . "\n";
+	processr($file);
+	processcopy($file);
+	if ($file =~ $copyfile){
+		# TODO - need to figure how to forward tex dependencies
+	}
+
 }
