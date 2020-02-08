@@ -7,18 +7,22 @@ Started on {{cookiecutter.release_date}}.
 
 All results are put in the `artifacts` directory.
 
+## Quick start 
 
-The finalized project should be able to run using `make`.
+The project can be built typing `make`.
 
 
 ## Example Project
 When checked out it contains the working example project. 
 This works on [CERN Higgs data](http://opendata.cern.ch/record/300).
+It follows the first few steps along the [Instruction for use of CMS Open Data in R](http://opendata.cern.ch/record/5102).
+
 
 The example project consist of following steps:
 
-1. Obtain input data:
- a. [CERN Higgs data](http://opendata.cern.ch/record/300) is downloaded to 
+0. Obtain input data:
+ a. [CERN Higgs data](http://opendata.cern.ch/record/300) is downloaded to `data-raw/`
+1. Convert to a dataset
 2. A sample conversion to `transform.Rdata`
 3. Create a markdown report which is then converted to `.docx` (word)
    `artifacts/titanic.docx` via [pandoc](https://pandoc.org/)
