@@ -1,0 +1,5 @@
+# data dependencies
+data/jpsi.RDS: data-raw/Jpsimumu.csv
+
+# script dependencies
+data/mass.RDS: r/cern_invmass.R

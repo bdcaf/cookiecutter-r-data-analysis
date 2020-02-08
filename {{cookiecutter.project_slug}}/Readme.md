@@ -22,8 +22,8 @@ The example project consist of following steps:
 
 0. Obtain input data:
  a. [CERN Higgs data](http://opendata.cern.ch/record/300) is downloaded to `data-raw/`
-1. Convert to a dataset
-2. A sample conversion to `transform.Rdata`
+1. Create R data: `data-raw/Jpsimumu.csv` is read into `data/jspi.RDS`
+2. Manipulate R data: 
 3. Create a markdown report which is then converted to `.docx` (word)
    `artifacts/titanic.docx` via [pandoc](https://pandoc.org/)
 4. Create a `Rnw` report which is then rendered with other tex files to
@@ -60,6 +60,14 @@ The files in folder `data-raw` are not altered by the scripts.
 - `artifacts` - completed products
 
 ### Script Patterns
+
+#### `make.auto`
+
+I use the perl script `scripts/recursive.pl` to walk through a number of files to automatically generate dependencies.
+For now I only look for the `readRDS` command in R code, more definitely to come. 
+Likely it may not catch some dependencies. Easiest is to add them yourself to the Makefile - or as I prefer an imported one here I called it `make.project`.
+It`s difficult to figure out modifications in functions under `R`. If I depend on them I add them to this file.
+
 
 #### `scripts/create_myname.R`
 A script to create `data/myname.RDS`.

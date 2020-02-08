@@ -2,6 +2,8 @@ REPORT_DIR:=render/report
 CACHEDIR= cache
 LMK=latexmk -pdf -f --interaction=nonstopmode -outdir=$(REPORT_DIR) -bibtex
 .PHONY= all clean
+WORKSCRIPTS:=$(wildcard scripts/*.R) 
+DOCSCRIPTS:=$(wildcard doc/*.Rnw) $(wildcard doc/*/*.Rnw) $(doc/*.Rmd) $(doc/*/*.Rmd)
 
 R:=Rscript
 knitBase:= $R -e "require(knitr); require(markdown);" \
@@ -14,6 +16,11 @@ knitBase:= $R -e "require(knitr); require(markdown);" \
 
 all: reports data 
 
+make.auto: $(WORKSCRIPTS) $(DOCSCRIPTS)
+	@perl scripts/recursive.pl $^ > $@
+include make.auto
+include make.project
+
 ## data-raw
 data-raw/%: data-raw/Makefile
 	make -C data-raw $(patsubst data-raw/%,%,$@)
@@ -22,8 +29,6 @@ data-raw/%: data-raw/Makefile
 data/%.RDS: scripts/create_%.R
 	$R $< $@
 
-## and raw data if required
-data/mass.Rdata: dataraw/Jpsimumu.csv r/cern_invmass.R r/cern_magnitude.R
 
 ## word report
 # figures are not showing up yet!
@@ -77,7 +82,7 @@ $(REPORT_DIR)/%.pdf: doc/%.tex $(REPORT_DIR)/bibliography.bib
 clean: docclean articlean dataclean
 
 dataclean:
-	-rm -rf data/*.Rdata
+	-rm -rf data/*
 
 articlean:
 	-rm -rf artifacts/*

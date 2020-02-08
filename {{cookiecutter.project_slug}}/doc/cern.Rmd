@@ -13,16 +13,16 @@ would be a gigabyte sized file - so you wouldn't want to keep
 downloading it for every run.
 
 These lines in the Makefile download it - however I prefer to include
-it in the file `dependencies.makefile`:
+it in the file `data-raw/Makefile`:
 ```
-dataraw/Jpsimumu.csv:
+Jpsimumu.csv:
 	curl "http://opendata.cern.ch/record/545/files/Jpsimumu.csv" -o "$@"
 ```
 
 So I can here use it locally:
 
 ```{r}
-jpsi <- read.csv("dataraw/Jpsimumu.csv")
+jpsi <- read.csv("data-raw/Jpsimumu.csv")
 ```
 
 
@@ -34,7 +34,7 @@ pander::pander( head(jpsi),
        caption="head of the table")
 ```
 
-i cound follow through the tutorial...  
+i could follow through the tutorial...  
 however suppose in a larger project you'd like the results cached and
 functions split into several files.  the mass data is created in the
 makefile with the rules for `data/mass.rdata`  - note the
@@ -49,7 +49,7 @@ data/mass.rdata: dataraw/jpsimumu.csv r/cern_invmass.r r/cern_magnitude.r
 I then can just load it:
 
 ```{r}
-jpsimass <- readRDS("data/mass.Rdata")
+jpsimass <- readRDS("data/mass.RDS")
 ```
 
 
