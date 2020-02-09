@@ -4,7 +4,6 @@ LMK=latexmk -pdf -f --interaction=nonstopmode -outdir=$(REPORT_DIR) -bibtex
 .PHONY= all clean
 WORKSCRIPTS:=$(wildcard scripts/*.R) 
 DOCSCRIPTS:=$(wildcard doc/*.Rnw) $(wildcard doc/*/*.Rnw) $(wildcard doc/*.Rmd) $(wildcard doc/*/*.Rmd) $(wildcard doc/*.tex) $(wildcard doc/*/*.tex)
-.PHONY: make.auto clean
 
 R:=Rscript
 knitBase:= $R -e "require(knitr); require(markdown);" \
@@ -19,16 +18,17 @@ all: reports
 
 reports: artifacts/cern.docx artifacts/vignette.pdf
 
-make.auto: $(WORKSCRIPTS) $(DOCSCRIPTS)
-	@perl scripts/recursive.pl $^ > $@
-include make.auto
-include make.project
+Makefile.auto: $(WORKSCRIPTS) $(DOCSCRIPTS)
+	@REPORTDIR=$(REPORT_DIR) perl scripts/recursive.pl $^ > $@
+include Makefile.auto
+include Makefile.project
 
 ## data-raw
 data-raw/%: data-raw/Makefile
 	make -C data-raw $(patsubst data-raw/%,%,$@)
 
 ## data
+data: 
 data/%.RDS: scripts/create_%.R
 	$R $< $@
 

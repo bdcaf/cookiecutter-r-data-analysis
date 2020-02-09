@@ -5,7 +5,7 @@
 use strict;
 use warnings;
 
-my $reportdir = "render/report";
+my $reportdir = $ENV{'REPORTDIR'}; 
 my $rfile = qr/.*\.R(md|nw)?$/;
 my $copyfile = qr/.*\.(tex|md)$/;
 
